@@ -17,7 +17,7 @@
 	<link name="body">
 		<visual>
 
-			<origin rpy="0.0 0 0" xyz="0 0 0"/>
+			<origin  xyz="0 0 0"/>
 			
 			<geometry>
 				<mesh filename="package://viratsim/meshes/body/bot2.dae"/>
@@ -27,7 +27,7 @@
 		</visual>
 		
 		<collision>
-			<origin rpy="0.0 0 0" xyz="0 0 0"/>
+			<origin  xyz="0 0 0"/>
 			
 			<geometry>
 				<mesh filename="package://viratsim/meshes/body/bot2.dae"/>
@@ -41,7 +41,7 @@
 
 	<link name="front_wheel">
 		<visual>
-			<origin rpy="0.0 0 0" xyz="0.5 0 0"/>
+			<origin  xyz="0 0 0"/>
 
 			<geometry>
 				<mesh filename="package://viratsim/meshes/wheels/castors1.dae"/>
@@ -51,7 +51,7 @@
 		</visual>		        
 		
 		<collision>
-			<origin rpy="0.0 0 0" xyz="0.5 0 0"/>
+			<origin  xyz="0 0 0"/>
 
 			<geometry>
 				<mesh filename="package://viratsim/meshes/wheels/castors1.dae"/>
@@ -64,13 +64,13 @@
 	<joint name="front_axle" type="continuous">
 		<parent link="body"/>
 		<child link="front_wheel"/>
-		<origin xyz="0.5 0 0.05"/>
+		<origin rpy="0 1 0" xyz="0.48 0 0.02"/>
 	</joint>
 
-	<link name="rear_wheel">
+	<link name="rear_wheel_1">
 		<visual>
 
-			<origin rpy="0.0 0 0" xyz="0 0 0"/>
+			<origin  xyz="0 0 0"/>
 
 			<geometry>
 				<mesh filename="package://viratsim/meshes/wheels/tyre1.dae"/>
@@ -81,7 +81,7 @@
 		
 		<collision>
 
-			<origin rpy="0.0 0 0" xyz="0 0 0"/>
+			<origin  xyz="0 0 0"/>
 
 			<geometry>
 				<mesh filename="package://viratsim/meshes/wheels/tyre1.dae"/>
@@ -92,9 +92,40 @@
 		<xacro:default_inertial mass="5"/>
 	</link>
 
-	<joint name="rear_axle" type="continuous">
+	<joint name="rear_axle_1" type="continuous">
 		<parent link="body"/>
-		<child link="rear_wheel"/>
-		<origin xyz="0 0 0"/>
+		<child link="rear_wheel_1"/>
+		<origin rpy="0 1 0" xyz="0 -0.323 0"/>
+	</joint>
+
+	<link name="rear_wheel_2">
+		<visual>
+
+			<origin  xyz="0 0 0"/>
+
+			<geometry>
+				<mesh filename="package://viratsim/meshes/wheels/tyre1.dae"/>
+        		</geometry>
+        		
+        		<material name="white"/>		
+		</visual>
+		
+		<collision>
+
+			<origin  xyz="0 0 0"/>
+
+			<geometry>
+				<mesh filename="package://viratsim/meshes/wheels/tyre1.dae"/>
+        		</geometry>
+        		
+		</collision>
+					
+		<xacro:default_inertial mass="5"/>
+	</link>
+
+	<joint name="rear_axle_2" type="continuous">
+		<parent link="body"/>
+		<child link="rear_wheel_2"/>
+		<origin rpy="0 1 0" xyz="0 0.323 0"/>
 	</joint>
 </robot>
