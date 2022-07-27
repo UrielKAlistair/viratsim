@@ -136,7 +136,6 @@
 		<axis xyz="0 1 0" rpy="0 0 0"/>
 	</joint>
 
-
 	<gazebo reference="camera">
 		<sensor type="camera" name="camera">
 		<update_rate>30.0</update_rate>
@@ -160,7 +159,7 @@
 			<plugin name="camera_controller" filename="libgazebo_ros_camera.so">
 				<alwaysOn>true</alwaysOn>
 				<updateRate>0.0</updateRate>
-				<cameraName>/mybot/camera</cameraName>
+				<cameraName>/virat/camera</cameraName>
 				<imageTopicName>image_raw</imageTopicName>
 				<cameraInfoTopicName>camera_info</cameraInfoTopicName>
 				<frameName>camera</frameName>

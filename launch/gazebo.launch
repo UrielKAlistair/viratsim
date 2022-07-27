@@ -1,13 +1,18 @@
-  <launch>
-	  <include file="$(find viratsim)/launch/getworld.launch"/>
+<launch>
+	<include file="$(find viratsim)/launch/getworld.launch"/>
 
-	  <param name="robot_description" command="xacro $(find viratsim)/description/virat_description.urdf.xacro" />
+	<param name="robot_description" command="xacro $(find viratsim)/description/virat_description.urdf.xacro" />
 
-	  <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model"
+	<node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model"
 		args="-unpause -urdf -model virat -param robot_description" respawn="false" output="screen" />
 
-	  <node pkg="robot_state_publisher" type="robot_state_publisher"  name="robot_state_publisher">
-	    <param name="publish_frequency" type="double" value="30.0" />
-	  </node>
-	  
-  </launch>
+	<node name="joint_state_publisher" pkg ="joint_state_publisher" type="joint_state_publisher"/>
+
+	<node pkg="robot_state_publisher" type="robot_state_publisher"  name="robot_state_publisher">
+		<param name="publish_frequency" type="double" value="30.0" />
+	</node>
+
+	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find viratsim)/config.rviz" required="true"  />
+
+</launch>
+  
