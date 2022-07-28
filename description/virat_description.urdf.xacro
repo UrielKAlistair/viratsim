@@ -195,4 +195,18 @@
 	<child link="camera"/>
 	</joint>
 
+	<plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
+ 		<alwaysOn>true</alwaysOn>
+		<updateRate>20</updateRate>
+		<leftJoint>rear_axle_2</leftJoint>
+		<rightJoint>rear_axle_1</rightJoint>
+		<wheelSeparation>0</wheelSeparation>
+		<wheelDiameter>0</wheelDiameter>
+		<torque>20</torque>
+		<commandTopic>/virat/cmd_vel</commandTopic>
+		<odometryTopic>/virat/odom</odometryTopic>
+		<odometryFrame>odom</odometryFrame>
+		<robotBaseFrame>body</robotBaseFrame>
+ 	</plugin>
+
 </robot>
