@@ -7,7 +7,19 @@
     </include>
     <!-- A ground plane -->
     <include>
-      <uri>model://ground_plane</uri>
+      <uri>model://grassplane</uri>
     </include>
+    <include name="pot_one">
+			<uri>model://pot</uri>
+      <pose>4 3 0 1.57 0 0</pose>
+		</include>
+    <include name="pot_one">
+			<uri>model://pot_1</uri>
+      <pose>-4 -2 0 1.57 0 0</pose>
+		</include>
+    <include name="pot_two">
+			<uri>model://pot_2</uri>
+      <pose>3 3 0 1.57 0 0</pose>
+		</include>
   </world>
 </sdf>
