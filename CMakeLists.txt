@@ -205,6 +205,9 @@ include_directories(
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
 
-catkin_install_python(PROGRAMS scripts/teleop_twist_keyboard.py
+catkin_install_python(PROGRAMS scripts/teleop.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+catkin_install_python(PROGRAMS scripts/potholedetector.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )

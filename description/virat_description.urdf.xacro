@@ -10,14 +10,14 @@
 		<inertial>
 			<origin rpy="0.0 0 0" xyz="0 0 0"/>
 			<mass value="${mass}" />
-			<inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+			<inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1" />
 		</inertial>
 	</xacro:macro>
 
 	<xacro:macro name="surface_coefficients">
 	 		<surface>
 				<bounce>
-					<restitution_coefficient>0.01</restitution_coefficient>
+					<restitution_coefficient>0.00000000000000001</restitution_coefficient>
 					<threshold>0.5</threshold>
 				</bounce>
 
@@ -88,11 +88,10 @@
 		<xacro:default_inertial mass="${castor_mass}"/>
 	</link>
 
-	<joint name="front_axle" type="continuous">
+	<joint name="front_axle" type="fixed">
 		<parent link="body"/>
 		<child link="front_wheel"/>
 		<origin xyz="0.48 0 0.02"/>
-		<axis xyz="0 0 1" rpy="0 0 0"/>
 		<joint_properties friction="100"/>
 	</joint>
 

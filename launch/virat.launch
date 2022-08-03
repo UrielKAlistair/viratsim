@@ -14,7 +14,9 @@
 
 	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find viratsim)/config.rviz" required="true"  />
 
-	<node name="teleop" pkg="viratsim" type="teleop_twist_keyboard.py" output="screen" launch-prefix="gnome-terminal --command"/>
+	<node name="teleop" pkg="viratsim" type="teleop.py" output="screen" launch-prefix="gnome-terminal --command"/>
+	
+	<node name="camera_feed" pkg="viratsim" type="potholedetector.py" output="screen"/>
   
 </launch>
   
