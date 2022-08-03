@@ -243,13 +243,13 @@
 	<wheelSeparation>0.646</wheelSeparation>
 
 	<!-- Diameter of the wheels, in meters, defaults to 0.15 m -->
-	<wheelDiameter>0.05</wheelDiameter>
+	<wheelDiameter>0.15</wheelDiameter>
 
 	<!-- Wheel acceleration, in rad/s^2, defaults to 0.0 rad/s^2 -->
 	<wheelAcceleration>1.0</wheelAcceleration>
 
 	<!-- Maximum torque which the wheels can produce, in Nm, defaults to 5 Nm -->
-	<wheelTorque>20</wheelTorque>
+	<wheelTorque>200000</wheelTorque>
 
 	<!-- Topic to receive geometry_msgs/Twist message commands, defaults to `cmd_vel` -->
 	<commandTopic>cmd_vel</commandTopic>
