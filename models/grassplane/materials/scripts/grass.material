@@ -1,0 +1,13 @@
+material grass
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture ../textures/grass.jpg
+      }
+    }
+  }
+}

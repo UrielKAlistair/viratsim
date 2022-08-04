@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<sdf version="1.4">
+<model name="pot">
+  <static>true</static>
+    <link name="pot">
+      <collision name="collision">
+        <geometry>
+          <mesh>
+            <uri>model://pot/meshes/pot.dae</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <cast_shadows>false</cast_shadows>
+        <geometry>
+          <mesh>
+            <uri>model://pot/meshes/pot.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+  </model>
+</sdf>

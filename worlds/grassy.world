@@ -1,25 +1,33 @@
 <?xml version="1.0" ?>
 <sdf version="1.5">
-  <world name="default">
-    <!-- A global light source -->
-    <include>
-      <uri>model://sun</uri>
-    </include>
-    <!-- A ground plane -->
-    <include>
-      <uri>model://grassplane</uri>
-    </include>
-    <include name="pot_one">
+	<world name="default">
+	<!-- A global light source -->
+		<include>
+			<uri>model://sun</uri>
+		</include>
+		<!-- A ground plane -->
+		<include>
+			<uri>model://grassplane</uri>
+		</include>
+
+		<include>
+			<name>pot_one</name>
 			<uri>model://pot</uri>
-      <pose>4 3 0 1.57 0 0</pose>
+			<pose>4 3 0 1.57 0 0</pose>
+
 		</include>
-    <include name="pot_one">
-			<uri>model://pot_1</uri>
-      <pose>-4 -2 0 1.57 0 0</pose>
+
+		<include>
+			<name>pot_two</name>
+			<uri>model://pot</uri>
+			<pose>-4 -2 0 1.57 0 0</pose>
 		</include>
-    <include name="pot_two">
-			<uri>model://pot_2</uri>
-      <pose>3 3 0 1.57 0 0</pose>
+
+		<include>
+			<name>pot_three</name>
+			<uri>model://pot</uri>
+			<pose>3 3 0 1.57 0 0</pose>
 		</include>
-  </world>
+
+	</world>
 </sdf>
