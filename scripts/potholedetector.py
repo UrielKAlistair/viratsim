@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import rospy
 import cv2
@@ -19,7 +19,13 @@ class camera_1:
     except CvBridgeError as e:
       rospy.logerr(e)
     
+    gray_image= cv2.cvtColor(cv_image,cv2.COLOR_BGR2GRAY)
+    _, thresh_image=cv2.threshold(gray_image,220,225,cv2.THRESH_BINARY)
+    contours, _= cv2.findContours (thresh_image, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    for cnt in contours:
+      cv2.drawContours(cv_image, [cnt],0,(255, 0, 0),3)
     cv2.imshow("Camera output", cv_image)
+    cv2.imshow("Processed", thresh_image)
     cv2.waitKey(3)
 
 def main():
