@@ -14,9 +14,9 @@ The robot contains the following parts:
 4) rear_wheel_1,2: Two rear wheels that can only rotate along the axis of the axle joining them
 5) camera : A box in which a camera plugin is placed
 
-And finally A differential drive plugin is added.
-The masses and the Inertias are bogus. Same goes for the Surface coefficients. These parameters can all be found at the top of the urdf. 
-These parameters were overly tweaked just to get the bot not do crazy things.
+And finally a differential drive plugin is added.
+The masses and the inertias are bogus. Same goes for the surface coefficients. These parameters can all be found at the top of the urdf. 
+These parameters were overly tweaked just to get the bot to not do crazy things.
 
 (II)
 The launch folder contains a boilerplate getworld.launch from gazebo's files and virat.launch, which basically sets off our entire project.
@@ -27,8 +27,7 @@ The virat.launch does the following:
 2) Spawns the urdf in the world
 3) Opens up a joint state publisher
 4) And a robot state publisher. 
-(I assumed that a robot state publisher would automatically publish the states of the joints, but my transforms all failed when the JSP was not initiated.
-Presumably, running both is the source of a spam of redundant transform warnings, but a functioning model is all I was after.)
+(I assumed that a robot state publisher would automatically publish the states of the joints, but my transforms all failed when the JSP was not initiated.Presumably, running both is the source of a spam of redundant transform warnings, but a functioning model is all I was after.)
 5) Opens up RVIZ 
 6) Initiates a teleop node, and opens up a new terminal for it. The new terminal is because the original one is flooded with the warnings.
 7) Initiates a potholedetection node.
@@ -38,8 +37,7 @@ The meshes folder merely contains the body and wheel meshes used in the urdf.
 
 (IV)
 models contains the grassy_plane,sun and pothole models used to make the grassy.world. 
-Even the boilerplate model of the sun is here because in order to contain all that we use inside the package, we have modified the gazebo model path
-to point inside our package in our package.xml file.
+Even the boilerplate model of the sun is here because in order to contain all that we use inside the package, we have modified the gazebo model path to point inside our package in our package.xml file.
 
 (V)
 Scripts contains 2 python files.
@@ -49,8 +47,8 @@ The key presses are mapped to linear and angular velocity parameters, and it is 
 
 The pothole detector first subscribes to /virat/camera/image_raw, a topic published to by the camera plugin. 
 It first shows the camera feed in an opencv dialog box just to give a nice first person perspective when controlling the vehicle using the teleop.
-It takes the camera feed, puts a gray filter on it, and then thresholds the image to make any point below a certain whiteness completely black,
-and the rest totally white. This works because the potholes are a pure perfect white.
+It takes the camera feed, puts a gray filter on it, and then thresholds the image to make any point below a certain whiteness completely black, and the rest totally white. This works because the potholes are a perfect white.
+
 Once this filter is applied, the potholes are the only things left in the midst of the darkness. A simple contour detection gets the boundaries we need.
 This is now a set of 2D points on the image we received.
 
