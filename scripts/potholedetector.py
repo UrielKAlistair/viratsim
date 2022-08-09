@@ -7,54 +7,67 @@ import cv2
 from cv_bridge import CvBridge
 
 from sensor_msgs.msg import Image
-from sensor_msgs.msg import PointCloud
+from sensor_msgs import point_cloud2
 from sensor_msgs.msg import CameraInfo
 
-from geometry_msgs.msg import Point32
+from sensor_msgs.msg import PointCloud2, PointField
 import std_msgs.msg
+
+
+def point_to3d(u, v):
+    global K
+
+    kinv = np.linalg.inv(K)
+    R = np.array([[1, 0, 0], [0, np.cos(0.45), -np.sin(0.45)], [0, np.sin(0.45), np.cos(0.45)]])
+    # R = R.transpose()
+    nc = R.dot(np.array([0, 1, 0]))
+
+    kinv_dot_uv = kinv.dot(np.array([u, v, 1]))
+    ans = 1.18 * kinv_dot_uv / nc.dot(kinv_dot_uv)
+    return ans
 
 
 def transform_and_publish(contours):
     global cloud_pub
-    global P
 
-    if P is None:
+    if K is None:
         return
 
     pointsin3d = []
 
     for contour in contours:
-
         # getting coords from contours
-        cntrpts = contour.squeeze()
-
-        for point in cntrpts:
-            new = np.append(point, [1])
-            new = np.linalg.solve(P[:, [0, 1, 2]], new - P[:, 3])
-            pt_32 = Point32(new[0], new[1], new[2])
-            pointsin3d.append(pt_32)
+        contour = contour.squeeze()
+        for point in contour:
+            ans = point_to3d(point[0], point[1])
+            pointsin3d.append((ans[2], -ans[0], -ans[1], 1))
 
     header = std_msgs.msg.Header()
+    header.frame_id = 'camera'
     header.stamp = rospy.Time.now()
-    header.frame_id = 'base_link'
-    cloud = PointCloud()
-    cloud.header = header
-    cloud.points = pointsin3d
+
+    fields = [PointField('x', 0, PointField.FLOAT32, 1),
+              PointField('y', 4, PointField.FLOAT32, 1),
+              PointField('z', 8, PointField.FLOAT32, 1),
+              PointField('rgb', 16, PointField.UINT32, 1),
+              ]
+
+    cloud = point_cloud2.create_cloud(header, fields, pointsin3d)
     cloud_pub.publish(cloud)
 
 
 def camera_details_callback(data):
-    global P
+    global K
 
-    Pt = data.P
-    P = []
+    temp = data.K
+    K = []
 
     for i in range(3):
-        P.append([])
-        for j in range(4):
-            P[i].append(Pt[i * 4 + j])
+        K.append([])
+        for j in range(3):
+            K[i].append(temp[i * 3 + j])
 
-    P = np.array(P)
+    K = np.array(K)
 
 
 def img_callback(data):
@@ -67,18 +80,18 @@ def img_callback(data):
 
     # Detecting the contours
     contours, _ = cv2.findContours(gray_img, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
-    ct_image = cv2.drawContours(og_image, contours, -1, (0, 0, 0), 3)
 
     # Publishing to point cloud
     transform_and_publish(contours)
+
 
 if __name__ == '__main__':
 
     rospy.init_node('potholedetector', anonymous=False)
     image_sub = rospy.Subscriber("virat/camera/image_raw", Image, img_callback)
-    cloud_pub = rospy.Publisher("point_cloud", PointCloud, queue_size=10)
+    cloud_pub = rospy.Publisher("point_cloud", PointCloud2, queue_size=10)
 
-    P = None
+    K = None
     camera_info_sub = rospy.Subscriber("virat/camera/camera_info", CameraInfo, camera_details_callback)
 
     try:

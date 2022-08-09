@@ -15,8 +15,12 @@
 	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find viratsim)/config.rviz" required="true"  />
 
 	<node name="teleop" pkg="viratsim" type="teleop.py" output="screen" launch-prefix="gnome-terminal --command"/>
-	
+
 	<node name="potholedetector" pkg="viratsim" type="potholedetector.py" output="screen"/>
-  
+
+    <node pkg="tf" type="static_transform_publisher" name="base_link_to_base_footprint" args="0 0 0 0 0 0 base_link base_footprint 10" />
+    <node pkg="tf" type="static_transform_publisher" name="base_link_to_body" args="0 0 0 0 0 0 base_link body 10" />
+    <node pkg="tf" type="static_transform_publisher" name="base_link_to_odom" args="0 0 0 0 0 0 base_link odom 10" />
+
 </launch>
   

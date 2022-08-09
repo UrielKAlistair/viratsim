@@ -23,14 +23,21 @@
 
         			<friction>
         				<ode>
-        					<mu>100000</mu>
-        					<mu2>100000</mu2>
+        					<mu>100000000000</mu>
+        					<mu2>100000000000</mu2>
         				</ode>
         			</friction>
         		</surface>
         </xacro:macro>
 
 	<link name="base_link"/>
+	<link name="odom"/>
+
+	<joint name="odom_joint" type="fixed">
+		<parent link="base_link"/>
+		<child link="odom"/>
+		<origin xyz="0 0 0"/>
+	</joint>
 
 	<link name="body">
 		<visual>
@@ -221,9 +228,9 @@
 	</link>
 
 	<joint name="camera_joint" type="fixed">
-	<origin xyz="0.73 0 1.18" rpy="0 0.45 0"/>
-	<parent link="body"/>
-	<child link="camera"/>
+		<origin xyz="0.73 0 1.18" rpy="0 0.45 0"/>
+		<parent link="base_link"/>
+		<child link="camera"/>
 	</joint>
 
 
