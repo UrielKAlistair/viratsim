@@ -31,13 +31,6 @@
         </xacro:macro>
 
 	<link name="base_link"/>
-	<link name="odom"/>
-
-	<joint name="odom_joint" type="fixed">
-		<parent link="base_link"/>
-		<child link="odom"/>
-		<origin xyz="0 0 0"/>
-	</joint>
 
 	<link name="body">
 		<visual>
@@ -247,9 +240,8 @@
 	<odometryTopic>odom</odometryTopic>
 	<odometryFrame>odom</odometryFrame>
 	<robotBaseFrame>base_footprint</robotBaseFrame>
-	<odometrySource>1</odometrySource>
-	<publishWheelTF>true</publishWheelTF>
-	<publishOdom>true</publishOdom>
+	<publishOdomTF>true</publishOdomTF>
+	<publishWheelTF>false</publishWheelTF>
 	<publishWheelJointState>true</publishWheelJointState>
 	<legacyMode>false</legacyMode>
 	</plugin>

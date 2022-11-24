@@ -10,13 +10,13 @@
 	<node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model"
 		args="-unpause -urdf -model virat -param robot_description" respawn="false" output="screen" />
 
-	<!-- Setting up tfs -->
+	<!-- Setting up tfs 
+		<node pkg="tf" type="static_transform_publisher" name="base_link_to_map" args="0.0 0 0 0 0 0 base_link map 30" />
+	-->
 	
-	<node pkg="robot_state_publisher" type="robot_state_publisher"  name="robot_state_publisher">
-		<param name="publish_frequency" type="double" value="30.0" />
-	</node>
+	<node pkg="robot_state_publisher" type="robot_state_publisher"  name="robot_state_publisher"/>
 	
-	<node pkg="tf" type="static_transform_publisher" name="base_link_to_map" args="0.0 0 0 0 0 0 base_link map 30" />
+	<node pkg="tf" type="static_transform_publisher" name="map_to_odom" args="0.0 0 0 0 0 0 map odom 30" />
 	<node pkg="tf" type="static_transform_publisher" name="base_link_to_base_footprint" args="0 0 0 0 0 0 base_link base_footprint 10" />
 	
 	<!-- Initialising the Pothole Detection algo and RVIZ to visualise everything-->
