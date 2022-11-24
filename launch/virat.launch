@@ -24,7 +24,7 @@
 	<!-- Initialising the Pothole Detection algo and RVIZ to visualise everything-->
 	
 	<node name="potholedetector" pkg="viratsim" type="potholedetector.py" output="screen"/>
-	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find viratsim)/config.rviz" required="true"  />	
+	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find viratsim)/config/config.rviz" required="true"  />	
 
 </launch>
   

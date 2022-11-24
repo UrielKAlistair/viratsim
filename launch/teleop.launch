@@ -1,3 +1,3 @@
 <launch>
-	<node name="teleop" pkg="viratsim" type="teleop.py" output="screen" launch-prefix="gnome-terminal --command"/>
+	<node name="teleop" pkg="viratsim" type="teleop.py" output="screen"/>
 </launch>

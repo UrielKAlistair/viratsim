@@ -9,6 +9,7 @@ In addition, you must have gazebo-ros integration, and move_base to run the navs
 I have included the install commands for the last two in a prerequisites.bash file in this directory.
 
 Assuming you've got the dependencies, running this is fairly simple.
+Simply clone my entire repo inside the src folder of a catkin workspace. The package name will be viratsim.
 virat.launch will launch a gazebo world, spawn the vehicle in it and open Rviz for you to visualise anything we may be seeing.
 
 teleop.launch will let you control the vehicle with a teleop.
@@ -35,7 +36,7 @@ These parameters were overly tweaked just to get the bot to not do crazy things.
 
 (II) launch
 
-The function of the launch files was already described in the running this package section.
+The function of the launch files was already described in the "running this package" section.
 The gazebo_world.launch opens up a gazebo world called grassy.world, which can be found in the worlds directory. It's called by virat.launch, so do not use this file individually yourself.
 
 (III) meshes
@@ -47,9 +48,9 @@ The meshes folder merely contains the body and wheel meshes used in the urdf.
 models contains the grassy_plane,sun and pothole models used to make the grassy.world. 
 Even the boilerplate model of the sun is here because in order to contain all that we use inside the package, we have modified the gazebo model path to point inside our package in our package.xml file.
 
-(V) params
+(V) config
 
-This contains the configuration files for use by move_base.
+This contains the configuration files for use by move_base, and the rviz config file.
 
 (VI) scripts
 
