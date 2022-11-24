@@ -1,10 +1,25 @@
 # viratsim
-The first "kind of a big deal" abhiyaan task. Involves creating a model of virat, obtaining its camera feed from a simulated environment
-and manipulating the feed to deduce information.
+The first "kind of a big deal" abhiyaan task. 
+This package simulates the vehicle virat in a virtual environment.
 
-A detailed description:
+Running this package:
 
-(I)
+You must already have Rviz and Gazebo installed in your system in order run this package.
+In addition, you must have gazebo-ros integration, and move_base to run the navstack.
+I have included the install commands for the last two in a prerequisites.bash file in this directory.
+
+Assuming you've got the dependencies, running this is fairly simple.
+virat.launch will launch a gazebo world, spawn the vehicle in it and open Rviz for you to visualise anything we may be seeing.
+
+teleop.launch will let you control the vehicle with a teleop.
+
+move_base.launch will enable autonomous movement of the vehicle using the ROS Navigation Stack.
+
+
+A detailed explanation of the function each file in this package:
+
+(I) description
+
 The description folder contains the urdf file for our robot, virat. 
 The robot contains the following parts:
 
@@ -18,28 +33,26 @@ And finally a differential drive plugin is added.
 The masses and the inertias are bogus. Same goes for the surface coefficients. These parameters can all be found at the top of the urdf. 
 These parameters were overly tweaked just to get the bot to not do crazy things.
 
-(II)
-The launch folder contains a boilerplate getworld.launch from gazebo's files and virat.launch, which basically sets off our entire project.
-The getworld opens up a gazebo world called grassy.world, which can be found in the worlds directory.
+(II) launch
 
-The virat.launch does the following:
-1) Opens up grassy.world in Gazebo
-2) Spawns the urdf in the world
-3) Opens up a joint state publisher
-4) And a robot state publisher. 
-(I assumed that a robot state publisher would automatically publish the states of the joints, but my transforms all failed when the JSP was not initiated.Presumably, running both is the source of a spam of redundant transform warnings, but a functioning model is all I was after.)
-5) Opens up RVIZ 
-6) Initiates a teleop node, and opens up a new terminal for it. The new terminal is because the original one is flooded with the warnings.
-7) Initiates a potholedetection node.
+The function of the launch files was already described in the running this package section.
+The gazebo_world.launch opens up a gazebo world called grassy.world, which can be found in the worlds directory. It's called by virat.launch, so do not use this file individually yourself.
 
-(III)
+(III) meshes
+
 The meshes folder merely contains the body and wheel meshes used in the urdf.
 
-(IV)
+(IV) models
+
 models contains the grassy_plane,sun and pothole models used to make the grassy.world. 
 Even the boilerplate model of the sun is here because in order to contain all that we use inside the package, we have modified the gazebo model path to point inside our package in our package.xml file.
 
-(V)
+(V) params
+
+This contains the configuration files for use by move_base.
+
+(VI) scripts
+
 Scripts contains 2 python files.
 The teleop is fairly straightforward. It is a heavily stripped down and highly re-written version of a teleop script I found on the internet. 
 It uses the termios and tty modules to convert key presses to usable python data. This is the only part of the code I didnt modify.
@@ -52,6 +65,9 @@ It takes the camera feed, puts a gray filter on it, and then thresholds the imag
 Once this filter is applied, the potholes are the only things left in the midst of the darkness. A simple contour detection gets the boundaries we need.
 This is now a set of 2D points on the image we received.
 
-We utilise some method (either the pinholecamera module or an actual matrix multiplication to avoid the datatype conversion fiasco; which one will be known before the last commit only.) to transform the 2D pixel coordinates into points on the ground plane.
+We then transform the 2D pixel coordinates into points on the ground plane.
+This is then published as a point cloud, and can be visualised in RViz.
 
-This is then published as a point cloud, and it can be visualised in RViz.
+(VII) worlds
+
+contains the gazebo world we will be operating in.
