@@ -81,10 +81,6 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-        odom:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
         rear_wheel_1:
           Alpha: 1
           Show Axes: false
@@ -106,8 +102,6 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: true
-        base_footprint:
-          Value: true
         base_link:
           Value: true
         body:
@@ -131,22 +125,18 @@ Visualization Manager:
       Show Axes: true
       Show Names: true
       Tree:
-        base_link:
-          base_footprint:
-            {}
-          body:
-            front_wheel:
-              {}
-          camera:
-            {}
-          map:
-            {}
+        map:
           odom:
-            {}
-          rear_wheel_1:
-            {}
-          rear_wheel_2:
-            {}
+            base_link:
+              body:
+                front_wheel:
+                  {}
+                rear_wheel_1:
+                  {}
+                rear_wheel_2:
+                  {}
+              camera:
+                {}
       Update Interval: 0
       Value: true
     - Class: rviz/Image
@@ -277,7 +267,7 @@ Visualization Manager:
   Global Options:
     Background Color: 48; 48; 48
     Default Light: true
-    Fixed Frame: base_link
+    Fixed Frame: map
     Frame Rate: 30
   Name: root
   Tools:
@@ -301,7 +291,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 7.401317119598389
+      Distance: 9.284212112426758
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1

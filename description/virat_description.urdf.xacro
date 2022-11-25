@@ -1,250 +1,264 @@
 <?xml version="1.0"?>
 <robot name="virat" xmlns:xacro="http://ros.org/wiki/xacro">
 
-	<xacro:property name="body_mass" value="50"/>
-	<xacro:property name="rear_wheel_mass" value="5"/>
-	<xacro:property name="castor_mass" value="15"/>
-	<xacro:property name="camera_mass" value="0.2"/>
+    <xacro:property name="rear_wheel_dist" value="0.12"/>
+    <xacro:property name="rear_wheel_dia" value="0.2"/>
 
-	<xacro:macro name="default_inertial" params="mass">
-		<inertial>
-			<origin rpy="0.0 0 0" xyz="0 0 0"/>
-			<mass value="${mass}" />
-			<inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1" />
-		</inertial>
-	</xacro:macro>
+    <xacro:macro name="camera_origin">
+        <origin xyz="0.73 0 1.18" rpy="0 0.45 0"/>
+    </xacro:macro>
 
-	<xacro:macro name="surface_coefficients">
-	 		<surface>
-				<bounce>
-					<restitution_coefficient>0.00000000000000001</restitution_coefficient>
-					<threshold>0.5</threshold>
-				</bounce>
+    <xacro:macro name="castor_origin">
+        <origin xyz="0.2 0 -0.0175"/>
+    </xacro:macro>
 
-        			<friction>
-        				<ode>
-        					<mu>100000000000</mu>
-        					<mu2>100000000000</mu2>
-        				</ode>
-        			</friction>
-        		</surface>
-        </xacro:macro>
+    <xacro:macro name="surface_coefficients">
+<!--        <surface>-->
+<!--            <bounce>-->
+<!--                <restitution_coefficient>0.00000000000000001</restitution_coefficient>-->
+<!--                <threshold>0.5</threshold>-->
+<!--            </bounce>-->
 
-	<link name="base_link"/>
+<!--            <friction>-->
+<!--                <ode>-->
+<!--                    <mu>100000000000</mu>-->
+<!--                    <mu2>100000000000</mu2>-->
+<!--                </ode>-->
+<!--            </friction>-->
+<!--        </surface>-->
+    </xacro:macro>
 
-	<link name="body">
-		<visual>
+    <link name="base_link"/>
 
-			<origin  xyz="0 0 0"/>
+    <link name="body">
 
-			<geometry>
-				<mesh filename="package://viratsim/meshes/body/bot2.dae"/>
-        		</geometry>
+        <visual>
+            <origin xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="package://viratsim/meshes/body/bot2.dae"/>
+            </geometry>
+        </visual>
 
+        <collision>
+            <origin xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="package://viratsim/meshes/body/bot2.dae"/>
+            </geometry>
+        </collision>
 
-		</visual>
+        <inertial>
+            <origin xyz="0 0 0"/>
+            <mass value="8.0"/>
+            <inertia ixx="2" ixy="0.0" ixz="0.0" iyy="3" iyz="0.0" izz="1"/>
+        </inertial>
 
-		<collision>
-			<origin  xyz="0 0 0"/>
+    </link>
 
-			<geometry>
-				<mesh filename="package://viratsim/meshes/body/bot2.dae"/>
-			</geometry>
+    <joint name="dummy_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="body"/>
+        <origin xyz="0 0 0"/>
+    </joint>
 
-		</collision>
+    <link name="front_wheel">
 
-		<xacro:default_inertial mass="${body_mass}"/>
+        <visual>
+            <xacro:castor_origin/>
+            <geometry>
+                <mesh filename="package://viratsim/meshes/wheels/castors1.dae"/>
+            </geometry>
+        </visual>
 
-	</link>
+        <collision>
+            <xacro:castor_origin/>
+            <geometry>
+                <mesh filename="package://viratsim/meshes/wheels/castors1.dae"/>
+            </geometry>
+            <xacro:surface_coefficients/>
+        </collision>
 
-	<joint name="dummy_joint" type="fixed">
-		<parent link="base_link"/>
-		<child link="body"/>
-		<origin xyz="0 0 0"/>
-	</joint>
+        <inertial>
+            <xacro:castor_origin/>
+            <mass value="1.0"/>
+            <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+        </inertial>
+    </link>
 
-	<link name="front_wheel">
-		<visual>
-			<origin  xyz="0 0 0"/>
+    <joint name="front_axle" type="fixed">
+        <parent link="base_link"/>
+        <child link="front_wheel"/>
+        <xacro:castor_origin/>
+        <joint_properties friction="100"/>
+    </joint>
 
-			<geometry>
-				<mesh filename="package://viratsim/meshes/wheels/castors1.dae"/>
-        		</geometry>
+    <link name="rear_wheel_left">
+        <visual>
 
+            <origin xyz="0 ${rear_wheel_dist} 0"/>
 
-		</visual>
-
-		<collision>
-			<origin  xyz="0 0 0"/>
-
-			<geometry>
-				<mesh filename="package://viratsim/meshes/wheels/castors1.dae"/>
-        		</geometry>
-
-              		<xacro:surface_coefficients/>
-
-		</collision>
-
-		<xacro:default_inertial mass="${castor_mass}"/>
-	</link>
-
-	<joint name="front_axle" type="fixed">
-		<parent link="body"/>
-		<child link="front_wheel"/>
-		<origin xyz="0.48 0 0.02"/>
-		<joint_properties friction="100"/>
-	</joint>
-
-	<link name="rear_wheel_1">
-		<visual>
-
-			<origin  xyz="0 0 0"/>
-
-			<geometry>
-				<mesh filename="package://viratsim/meshes/wheels/tyre1.dae"/>
-        		</geometry>
+            <geometry>
+                <mesh filename="package://viratsim/meshes/wheels/tyre1.dae"/>
+            </geometry>
 
 
-		</visual>
+        </visual>
 
-		<collision>
+        <collision>
 
-			<origin  xyz="0 0 0"/>
+            <origin xyz="0 ${rear_wheel_dist} 0"/>
 
-			<geometry>
-				<mesh filename="package://viratsim/meshes/wheels/tyre1.dae"/>
-        		</geometry>
+            <geometry>
+                <mesh filename="package://viratsim/meshes/wheels/tyre1.dae"/>
+            </geometry>
 
-        		<xacro:surface_coefficients/>
-
-
-		</collision>
-
-		<xacro:default_inertial mass="${rear_wheel_mass}"/>
-	</link>
-
-	<joint name="rear_axle_1" type="continuous">
-		<parent link="body"/>
-		<child link="rear_wheel_1"/>
-		<origin xyz="0 -0.323 0"/>
-		<axis xyz="0 1 0" rpy="0 0 0"/>
-		<joint_properties friction="100"/>
-	</joint>
+            <xacro:surface_coefficients/>
 
 
-	<link name="rear_wheel_2">
-		<visual>
+        </collision>
 
-			<origin  xyz="0 0 0"/>
+        <inertial>
+            <origin xyz="0 ${rear_wheel_dist} 0"/>
+            <mass value="1.0"/>
+            <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+        </inertial>
+    </link>
 
-			<geometry>
-				<mesh filename="package://viratsim/meshes/wheels/tyre1.dae"/>
-        		</geometry>
+    <joint name="rear_axle_left" type="continuous">
+        <parent link="base_link"/>
+        <child link="rear_wheel_left"/>
+        <origin xyz="0 ${rear_wheel_dist} 0"/>
+        <axis xyz="0 1 0" rpy="0 0 0"/>
+        <joint_properties friction="100"/>
+    </joint>
 
+    <link name="rear_wheel_right">
+        <visual>
 
-		</visual>
+            <origin xyz="0 ${-rear_wheel_dist} 0"/>
 
-		<collision>
-
-			<origin  xyz="0 0 0"/>
-
-			<geometry>
-				<mesh filename="package://viratsim/meshes/wheels/tyre1.dae"/>
-        		</geometry>
-
-        		<xacro:surface_coefficients/>
-
-		</collision>
-
-		<xacro:default_inertial mass="${rear_wheel_mass}"/>
-	</link>
-
-	<joint name="rear_axle_2" type="continuous">
-		<parent link="body"/>
-		<child link="rear_wheel_2"/>
-		<origin xyz="0 0.323 0"/>
-		<axis xyz="0 1 0" rpy="0 0 0"/>
-		<joint_properties friction="100"/>
-	</joint>
-
-	<gazebo reference="camera">
-		<sensor type="camera" name="camera">
-		<update_rate>30.0</update_rate>
-			<camera name="head">
-				<horizontal_fov>1.3962634</horizontal_fov>
-				<image>
-				  <width>800</width>
-				  <height>800</height>
-				  <format>R8G8B8</format>
-				</image>
-				<clip>
-				  <near>0.02</near>
-				  <far>300</far>
-				</clip>
-				<noise>
-				  <type>gaussian</type>
-				  <mean>0.0</mean>
-				  <stddev>0.007</stddev>
-				</noise>
-			</camera>
-			<plugin name="camera_controller" filename="libgazebo_ros_camera.so">
-				<alwaysOn>true</alwaysOn>
-				<updateRate>0.0</updateRate>
-				<cameraName>/virat/camera</cameraName>
-				<imageTopicName>image_raw</imageTopicName>
-				<cameraInfoTopicName>camera_info</cameraInfoTopicName>
-				<frameName>camera</frameName>
-				<hackBaseline>0.07</hackBaseline>
-				<distortionK1>0.0</distortionK1>
-				<distortionK2>0.0</distortionK2>
-				<distortionK3>0.0</distortionK3>
-				<distortionT1>0.0</distortionT1>
-				<distortionT2>0.0</distortionT2>
-			</plugin>
-		</sensor>
-	</gazebo>
-
-	<link name="camera">
-		<visual>
-			<geometry>
-				<box size="0.05 0.05 0.05"/>
-			</geometry>
-		</visual>
-
-		<collision>
-			<geometry>
-				<box size="0.05 0.05 0.05"/>
-			</geometry>
-		</collision>
-
-		<xacro:default_inertial mass="${camera_mass}"/>
-	</link>
-
-	<joint name="camera_joint" type="fixed">
-		<origin xyz="0.73 0 1.18" rpy="0 0.45 0"/>
-		<parent link="base_link"/>
-		<child link="camera"/>
-	</joint>
+            <geometry>
+                <mesh filename="package://viratsim/meshes/wheels/tyre1.dae"/>
+            </geometry>
 
 
-	<gazebo>
-	<plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
-	<updateRate>30</updateRate>
-	<leftJoint>rear_axle_1</leftJoint>
-	<rightJoint>rear_axle_2</rightJoint>
-	<wheelSeparation>0.646</wheelSeparation>
-	<wheelDiameter>0.15</wheelDiameter>
-	<wheelAcceleration>1.0</wheelAcceleration>
-	<wheelTorque>200000</wheelTorque>
-	<commandTopic>cmd_vel</commandTopic>
-	<odometryTopic>odom</odometryTopic>
-	<odometryFrame>odom</odometryFrame>
-	<robotBaseFrame>base_link</robotBaseFrame>
-	<publishOdomTF>true</publishOdomTF>
-	<publishWheelTF>false</publishWheelTF>
-	<publishWheelJointState>true</publishWheelJointState>
-	<legacyMode>false</legacyMode>
-	</plugin>
+        </visual>
 
-</gazebo>
+        <collision>
+
+            <origin xyz="0 ${-rear_wheel_dist} 0"/>
+
+            <geometry>
+                <mesh filename="package://viratsim/meshes/wheels/tyre1.dae"/>
+            </geometry>
+
+            <xacro:surface_coefficients/>
+
+        </collision>
+
+        <inertial>
+            <origin xyz="0 ${-rear_wheel_dist} 0"/>
+            <mass value="1.0"/>
+            <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+        </inertial>
+
+    </link>
+
+    <joint name="rear_axle_right" type="continuous">
+        <parent link="base_link"/>
+        <child link="rear_wheel_right"/>
+        <origin xyz="0 ${-rear_wheel_dist} 0"/>
+        <axis xyz="0 1 0" rpy="0 0 0"/>
+        <joint_properties friction="100"/>
+    </joint>
+
+    <link name="camera">
+        <visual>
+            <geometry>
+                <box size="0.05 0.05 0.05"/>
+            </geometry>
+        </visual>
+
+        <collision>
+            <geometry>
+                <box size="0.05 0.05 0.05"/>
+            </geometry>
+        </collision>
+
+        <inertial>
+            <xacro:camera_origin/>
+            <mass value="1e-5"/>
+            <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6"/>
+        </inertial>
+    </link>
+
+    <joint name="camera_joint" type="fixed">
+        <xacro:camera_origin/>
+        <parent link="base_link"/>
+        <child link="camera"/>
+    </joint>
+
+    <gazebo reference="camera">
+        <sensor type="camera" name="camera">
+            <update_rate>30.0</update_rate>
+            <camera name="head">
+                <horizontal_fov>1.3962634</horizontal_fov>
+                <image>
+                    <width>800</width>
+                    <height>800</height>
+                    <format>R8G8B8</format>
+                </image>
+                <clip>
+                    <near>0.02</near>
+                    <far>300</far>
+                </clip>
+                <noise>
+                    <type>gaussian</type>
+                    <mean>0.0</mean>
+                    <stddev>0.007</stddev>
+                </noise>
+            </camera>
+            <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+                <alwaysOn>true</alwaysOn>
+                <updateRate>0.0</updateRate>
+                <cameraName>/virat/camera</cameraName>
+                <imageTopicName>image_raw</imageTopicName>
+                <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+                <frameName>camera</frameName>
+                <hackBaseline>0.07</hackBaseline>
+                <distortionK1>0.0</distortionK1>
+                <distortionK2>0.0</distortionK2>
+                <distortionK3>0.0</distortionK3>
+                <distortionT1>0.0</distortionT1>
+                <distortionT2>0.0</distortionT2>
+            </plugin>
+        </sensor>
+    </gazebo>
+
+    <gazebo>
+        <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
+
+            <updateRate>30</updateRate>
+            <leftJoint>rear_axle_left</leftJoint>
+            <rightJoint>rear_axle_right</rightJoint>
+            <wheelSeparation>${2*rear_wheel_dist}</wheelSeparation>
+            <wheelDiameter>${rear_wheel_dia}</wheelDiameter>
+            <wheelAcceleration>0</wheelAcceleration>
+            <wheelTorque>5</wheelTorque>
+            <commandTopic>cmd_vel</commandTopic>
+            <odometryTopic>odom</odometryTopic>
+            <odometryFrame>odom</odometryFrame>
+            <robotBaseFrame>base_link</robotBaseFrame>
+            <publishOdomTF>true</publishOdomTF>
+            <publishWheelTF>false</publishWheelTF>
+            <publishWheelJointState>true</publishWheelJointState>
+            <legacyMode>false</legacyMode>
+
+            <odometrySource>1</odometrySource>
+            <publishOdom>true</publishOdom>
+            <alwaysOn>true</alwaysOn>
+            <rosDebugLevel>na</rosDebugLevel>
+            <torque>20</torque>
+        </plugin>
+    </gazebo>
+
 </robot>
