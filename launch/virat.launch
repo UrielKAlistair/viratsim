@@ -1,11 +1,10 @@
 <launch>
-	
-	<!-- Setting up the Gazebo World. -->	
-	
+	<arg name="autonomous" default="false"/>
+
+	<!-- Setting up the Gazebo World. -->
 	<include file="$(find viratsim)/launch/gazebo_world.launch"/>
 	
 	<!-- Spawn virat in the world-->
-	
 	<param name="robot_description" command="xacro $(find viratsim)/description/virat_description.urdf.xacro" />
 	<node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model"
 		args="-unpause -urdf -model virat -param robot_description" respawn="false" output="screen" />
@@ -13,15 +12,16 @@
 	<!-- Setting up tfs 
 		<node pkg="tf" type="static_transform_publisher" name="base_link_to_map" args="0.0 0 0 0 0 0 base_link map 30" />
 	-->
-	
 	<node pkg="robot_state_publisher" type="robot_state_publisher"  name="robot_state_publisher"/>
-	
 	<node pkg="tf" type="static_transform_publisher" name="map_to_odom" args="0.0 0 0 0 0 0 map odom 30" />
 	
 	<!-- Initialising the Pothole Detection algo and RVIZ to visualise everything-->
-	
 	<node name="potholedetector" pkg="viratsim" type="potholedetector.py" output="screen"/>
 	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find viratsim)/config/config.rviz" required="true"  />	
+
+	<group if="$(arg autonomous)">
+                <include file="$(find viratsim)/launch/move_base.launch"/>
+    </group>
 
 </launch>
   
